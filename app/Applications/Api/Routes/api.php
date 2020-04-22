@@ -13,10 +13,10 @@
 /**
  * @OA\Info(
  *      version="1.0.0",
- *      title="Laravel base api",
- *      description="Descrição de um projeto base api",
+ *      title="MixPlay API",
+ *      description="API da aplicação MixPlay, para pegar os dados.",
  *      @OA\Contact(
- *          email="contato@crosoften.com"
+ *          email="rodrigo.pinheiroa@hotmail.com"
  *      )
  * )
  */
