@@ -1,0 +1,282 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel base api",
+        "description": "Descrição de um projeto base api",
+        "contact": {
+            "email": "contato@crosoften.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Default Server"
+        }
+    ],
+    "paths": {
+        "/auth/signUp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registrar um usuário",
+                "operationId": "signUp",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signup"
+                },
+                "responses": {
+                    "422": {
+                        "$ref": "#components/responses/failed_validation"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "access_token": {
+                                                    "description": "Token de acesso",
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signIn": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logar um usuário",
+                "operationId": "signIn",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signin"
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "access_token": {
+                                                    "description": "Token de acesso",
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "$ref": "#/components/schemas/User"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Usuário ou senha invalidos"
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Recuperar informações do usuário autenticado",
+                "operationId": "userMe",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/auth/recovery": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Resetar senha",
+                "operationId": "recovery",
+                "requestBody": {
+                    "description": "Parâmetros para recuperar senha",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#components/responses/success"
+                    },
+                    "422": {
+                        "description": "Email inválido"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "born_date": {
+                        "type": "string"
+                    },
+                    "genre": {
+                        "description": "Gênero: 1 para masculino, 2 para feminino",
+                        "type": "integer",
+                        "enum": [
+                            1,
+                            2
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "unauthorized": {
+                "description": "Unauthorized"
+            },
+            "success": {
+                "description": "OK"
+            },
+            "failed_validation": {
+                "description": "Erro na validação"
+            }
+        },
+        "requestBodies": {
+            "Signin": {
+                "description": "Parâmetros para login",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Signup": {
+                "description": "Parâmetros para registro",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "born_date": {
+                                    "description": "Formato: d/m/Y",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "genre": {
+                                    "description": "Gênero: 1 para masculino, 2 para feminino",
+                                    "type": "integer",
+                                    "enum": [
+                                        1,
+                                        2
+                                    ]
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "password_confirmation": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Operações para autenticação"
+        }
+    ]
+}
