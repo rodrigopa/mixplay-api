@@ -46,3 +46,7 @@ Route::prefix('auth')->group(function() {
         Route::get('me', 'AuthController@me');
     });
 });
+
+Route::middleware([/*'api.auth', 'role:admin'*/])->group(function() {
+    Route::apiResource('genre', 'GenreController')->except('show');
+});

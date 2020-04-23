@@ -1,23 +1,28 @@
 <?php
 
-namespace App\Applications\Api\Requests\Auth;
+namespace App\Applications\Api\Requests\Genre;
 
-use App\Domain\Account\Repositories\UserRepository;
+use     public function attributes()
+    {
+        return [
+            'genre' => 'gênero'
+        ];
+    }
+App\Domain\Account\Repositories\UserRepository;
 use App\Infrastructure\Request\ApiRequest;
 use Illuminate\Validation\Rule;
 
 /**
  * @OA\RequestBody(
- *         request="Signin",
- *         description="Parâmetros para login",
+ *         request="StoreGenre",
+ *         description="Parâmetros para criar gênero",
  *         required=true,
  *         @OA\JsonContent(
- *              @OA\Property(property="email", type="string"),
- *              @OA\Property(property="password", type="string")
+ *              @OA\Property(property="name", type="string")
  *         )
  *     )
  */
-class Signin extends ApiRequest
+class StoreGenre extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,7 +37,7 @@ class Signin extends ApiRequest
     public function attributes()
     {
         return [
-            'password' => 'senha'
+            'name' => 'nome'
         ];
     }
 
@@ -43,11 +48,8 @@ class Signin extends ApiRequest
      */
     public function rules()
     {
-        $genreOptions = UserRepository::getAvailableGenres()->keys();
-
         return [
-            'email' => 'required|email',
-            'password' => 'required'
+            'name' => 'required'
         ];
     }
 }

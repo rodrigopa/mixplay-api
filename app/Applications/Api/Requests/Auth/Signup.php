@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Applications\Api\Requests;
+namespace App\Applications\Api\Requests\Auth;
 
 use App\Domain\Account\Repositories\UserRepository;
 use App\Infrastructure\Request\ApiRequest;

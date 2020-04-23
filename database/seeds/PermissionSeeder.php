@@ -21,7 +21,7 @@ class PermissionSeeder extends Seeder
         $user = $repository->create([
             'name' => 'Administrador',
             'email' => 'rodrigo.pinheiroa@hotmail.com',
-            'password' => bcrypt('123')
+            'password' => '123'
         ]);
         $user->assignRole('admin');
     }

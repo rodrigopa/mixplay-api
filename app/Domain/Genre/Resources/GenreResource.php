@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Domain\Account\Resources;
+
+namespace App\Domain\Genre\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @OA\Schema(
- *     schema="User",
+ *     schema="Genre",
  *     type="object",
  * )
  */
 
-class UserResource extends JsonResource
+class GenreResource extends JsonResource
 {
     /**
      * @OA\Property(property="id",type="integer")
-     * @OA\Property(property="name",type="string")
-     * @OA\Property(property="email",type="string")
+     * @OA\Property(property="title",type="string")
      *
      * @return array
      */
@@ -24,8 +24,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email
+            'name' => $this->name
         ];
     }
 }

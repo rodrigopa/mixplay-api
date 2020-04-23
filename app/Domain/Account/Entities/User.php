@@ -28,7 +28,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'born_date', 'genre', 'password',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -37,16 +37,12 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'password_changed_at'
+        'remember_token', 'password_changed_at'
     ];
 
     protected $dates = [
         'password_changed_at', 'created_at', 'updated_at'
     ];
-
-    public function setBornDateAttribute($value) {
-        $this->attributes['born_date'] = Carbon::createFromFormat('d/m/Y', $value);
-    }
 
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = Hash::make($value);

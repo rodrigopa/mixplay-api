@@ -1,10 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel base api",
-        "description": "Descrição de um projeto base api",
+        "title": "MixPlay API",
+        "description": "API da aplicação MixPlay, para pegar os dados.",
         "contact": {
-            "email": "contato@crosoften.com"
+            "email": "rodrigo.pinheiroa@hotmail.com"
         },
         "version": "1.0.0"
     },
@@ -169,6 +169,194 @@
                     }
                 }
             }
+        },
+        "/genre": {
+            "get": {
+                "tags": [
+                    "Genres"
+                ],
+                "summary": "Listar gêneros",
+                "operationId": "genreIndex",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Genres"
+                ],
+                "summary": "Criar gênero",
+                "operationId": "genreStore",
+                "requestBody": {
+                    "request": "Signup",
+                    "description": "Parâmetros para registro",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/genre/{genre}": {
+            "put": {
+                "tags": [
+                    "Genres"
+                ],
+                "summary": "Atualizar gênero",
+                "operationId": "genreUpdate",
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "request": "Genre",
+                    "description": "Parâmetros",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Genres"
+                ],
+                "summary": "Remover gênero",
+                "operationId": "genreDestroy",
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -181,16 +369,52 @@
                     "name": {
                         "type": "string"
                     },
-                    "born_date": {
+                    "email": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Genre Collection": {
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Genre"
+                        }
                     },
-                    "genre": {
-                        "description": "Gênero: 1 para masculino, 2 para feminino",
-                        "type": "integer",
-                        "enum": [
-                            1,
-                            2
-                        ]
+                    "links": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/Pagination"
+                    }
+                },
+                "type": "object"
+            },
+            "Genre": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Pagination": {
+                "properties": {
+                    "": {
+                        "properties": {
+                            "total_pages": {
+                                "description": "Total de páginas",
+                                "type": "string"
+                            },
+                            "current_page": {
+                                "description": "Página atual",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -263,6 +487,22 @@
                         }
                     }
                 }
+            },
+            "StoreGenre": {
+                "description": "Parâmetros para criar gênero",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {
@@ -277,6 +517,10 @@
         {
             "name": "Auth",
             "description": "Operações para autenticação"
+        },
+        {
+            "name": "Genres",
+            "description": "Gêneros CRUD"
         }
     ]
 }

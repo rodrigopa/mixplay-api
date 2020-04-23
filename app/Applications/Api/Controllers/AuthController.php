@@ -2,12 +2,14 @@
 
 namespace App\Applications\Api\Controllers;
 
-use App\Applications\Api\Requests\Signin;
-use App\Applications\Api\Requests\Signup;
+use App\Applications\Api\Requests\Auth\Signin;
+use App\Applications\Api\Requests\Auth\Signup;
 use App\Domain\Account\Events\SignUpEvent;
 use App\Domain\Account\Repositories\UserRepository;
+use App\Domain\Account\Resources\UserResource;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 
@@ -99,7 +101,7 @@ class AuthController extends Controller
 
         $data = [
             'access_token' => $token,
-            'user' => auth('api')->user()
+            'user' => new UserResource(auth('api')->user())
         ];
 
         return $this->responseSuccess($data);
