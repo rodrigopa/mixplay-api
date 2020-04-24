@@ -168,13 +168,14 @@ return [
 
         /*
          * Application Service Providers...
-         */
-//        App\Providers\AppServiceProvider::class,
+//         */
+//        App\Interfaces\Http\Providers\AppServiceProvider::class,
         App\Interfaces\Http\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Interfaces\Http\Providers\EventServiceProvider::class,
         App\Interfaces\Http\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        \App\Interfaces\Http\Providers\TmdbServiceProvider::class
 
     ],
 

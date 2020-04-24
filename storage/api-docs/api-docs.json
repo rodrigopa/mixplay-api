@@ -210,21 +210,7 @@
                 "summary": "Criar gênero",
                 "operationId": "genreStore",
                 "requestBody": {
-                    "request": "Signup",
-                    "description": "Parâmetros para registro",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
+                    "$ref": "#components/requestBodies/StoreGenre"
                 },
                 "responses": {
                     "200": {
@@ -267,26 +253,12 @@
                         "description": "ID do gênero",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
                 "requestBody": {
-                    "request": "Genre",
-                    "description": "Parâmetros",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
+                    "$ref": "#components/requestBodies/StoreGenre"
                 },
                 "responses": {
                     "200": {
@@ -327,7 +299,7 @@
                         "description": "ID do gênero",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -345,6 +317,353 @@
                                         "data": {
                                             "type": "object",
                                             "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/movie": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Listar filmes",
+                "operationId": "movieIndex",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Cadastrar um filme",
+                "operationId": "movieStore",
+                "requestBody": {
+                    "$ref": "#components/requestBodies/StoreMovie"
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/movie/{movie}": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Exibir detalhes de um filme",
+                "operationId": "movieShow",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "ID do filme",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Atualizar filme",
+                "operationId": "movieUpdate",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "ID do filme",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#components/requestBodies/StoreMovie"
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Remover filme",
+                "operationId": "movieDestroy",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "ID do filme",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/tmdb/search/{query}": {
+            "get": {
+                "tags": [
+                    "TMDB"
+                ],
+                "summary": "Buscar por filmes ou séries",
+                "operationId": "tmdbSearch",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "path",
+                        "description": "Texto a ser pesquisado",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/TMDB\\Search Collection"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/tmdb/movie/{id}": {
+            "get": {
+                "tags": [
+                    "TMDB"
+                ],
+                "summary": "Detalhar filme por id",
+                "operationId": "tmdbMovieDetail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "TMDB ID do filme",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/TMDB\\Movie"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/tmdb/tvshow/{id}": {
+            "get": {
+                "tags": [
+                    "TMDB"
+                ],
+                "summary": "Detalhar série por id",
+                "operationId": "tmdbSerieDetail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "TMDB ID da série",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/TMDB\\TvShow"
                                         }
                                     },
                                     "type": "object"
@@ -401,6 +720,177 @@
                 },
                 "type": "object"
             },
+            "Movie Collection": {
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Movie"
+                        }
+                    },
+                    "links": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/Pagination"
+                    }
+                },
+                "type": "object"
+            },
+            "Movie": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "TMDB\\Media": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "original_title": {
+                        "type": "string"
+                    },
+                    "original_language": {
+                        "type": "string"
+                    },
+                    "release_year": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "imdb_id": {
+                        "type": "string"
+                    },
+                    "poster": {
+                        "properties": {
+                            "small": {
+                                "type": "string"
+                            },
+                            "original": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "backdrop": {
+                        "properties": {
+                            "small": {
+                                "type": "string"
+                            },
+                            "original": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "TMDB\\Movie": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/TMDB\\Media"
+                    },
+                    {}
+                ]
+            },
+            "TMDB\\Pagination": {
+                "properties": {
+                    "": {
+                        "properties": {
+                            "total": {
+                                "description": "Total de resultados",
+                                "type": "integer"
+                            },
+                            "total_pages": {
+                                "description": "Total de páginas",
+                                "type": "integer"
+                            },
+                            "current_page": {
+                                "description": "Página atual",
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "TMDB\\Search Collection": {
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TMDB\\Media"
+                        }
+                    },
+                    "links": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/TMDB\\Pagination"
+                    }
+                },
+                "type": "object"
+            },
+            "TMDB\\TvShow\\Season": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "episode_count": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "season_number": {
+                        "type": "integer"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "poster": {
+                        "properties": {
+                            "small": {
+                                "type": "string"
+                            },
+                            "original": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "TMDB\\TvShow": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/TMDB\\Media"
+                    },
+                    {
+                        "properties": {
+                            "episodes_count": {
+                                "type": "integer"
+                            },
+                            "seasons_count": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
             "Pagination": {
                 "properties": {
                     "": {
@@ -411,6 +901,10 @@
                             },
                             "current_page": {
                                 "description": "Página atual",
+                                "type": "string"
+                            },
+                            "total": {
+                                "description": "Total de registros",
                                 "type": "string"
                             }
                         },
@@ -489,7 +983,7 @@
                 }
             },
             "StoreGenre": {
-                "description": "Parâmetros para criar gênero",
+                "description": "Parâmetros para cadastrar um gênero",
                 "required": true,
                 "content": {
                     "application/json": {
@@ -497,6 +991,34 @@
                             "properties": {
                                 "name": {
                                     "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "StoreMovie": {
+                "description": "Parâmetros para cadastrar um filme",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "year": {
+                                    "type": "integer"
+                                },
+                                "trailer_url": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "video_id": {
+                                    "type": "integer"
                                 }
                             },
                             "type": "object"
@@ -520,7 +1042,15 @@
         },
         {
             "name": "Genres",
-            "description": "Gêneros CRUD"
+            "description": "Operações CRUD para gêneros."
+        },
+        {
+            "name": "Movies",
+            "description": "Operações CRUD para filmes."
+        },
+        {
+            "name": "TMDB",
+            "description": "Operações na API de filmes e série TMDB."
         }
     ]
 }

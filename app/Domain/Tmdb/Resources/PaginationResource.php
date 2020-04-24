@@ -1,16 +1,13 @@
 <?php
 
 
-namespace App\Infrastructure\Resource;
-
+namespace App\Domain\Tmdb\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-
 
 /**
  * @OA\Schema(
- *     schema="Pagination",
+ *     schema="TMDB\Pagination",
  *     type="object",
  * )
  */
@@ -20,28 +17,28 @@ class PaginationResource extends JsonResource
      *          @OA\Property(
      *               type="object",
      *               @OA\Property(
+     *                   property="total",
+     *                   description="Total de resultados",
+     *                   type="integer"
+     *               ),
+     *               @OA\Property(
      *                   property="total_pages",
      *                   description="Total de páginas",
-     *                   type="string"
+     *                   type="integer"
      *               ),
      *               @OA\Property(
      *                   property="current_page",
      *                   description="Página atual",
-     *                   type="string"
-     *               ),
- *                   @OA\Property(
-     *                   property="total",
-     *                   description="Total de registros",
-     *                   type="string"
+     *                   type="integer"
      *               ),
      *           )
      */
     public function toArray($request)
     {
         return [
-            'total_pages' => $this->lastPage(),
-            'current_page' => $this->currentPage(),
-            'total' => $this->total()
+            'total_pages' => $this['total_pages'],
+            'current_page' => $this['page'],
+            'total' => $this['total_results']
         ];
     }
 }

@@ -48,5 +48,16 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::middleware([/*'api.auth', 'role:admin'*/])->group(function() {
-    Route::apiResource('genre', 'GenreController')->except('show');
+    // tmdb routes
+    Route::prefix('tmdb')->group(function() {
+        Route::get('search/{query}', 'TmdbController@search');
+        Route::get('movie/{id}', 'TmdbController@movieDetail');
+        Route::get('tvshow/{id}', 'TmdbController@tvShowDetail');
+    });
+
+    // media api resources
+    Route::namespace('Media')->group(function() {
+        Route::apiResource('genre', 'GenreController')->except('show');
+        Route::apiResource('movie', 'MovieController');
+    });
 });
