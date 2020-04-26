@@ -5,6 +5,10 @@
             Gêneros
         </hero-bar>
         <section class="section is-main-section">
+            <div class="module-actions">
+                <b-button type="is-secondary" tag="router-link" :to="{ name: 'genre.index' }">Listar</b-button>
+                <b-button type="is-secondary" tag="router-link" :to="{ name: 'genre.create' }">Criar</b-button>
+            </div>
             <router-view></router-view>
         </section>
     </div>

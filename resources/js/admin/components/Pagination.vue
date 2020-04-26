@@ -11,7 +11,7 @@
             :page="props.page"
             :id="`page${props.page.number}`"
             tag="router-link"
-            :to="{ 'name': 'genre.index', 'query': { 'page' : props.page.number } }">
+            :to="{ 'name': routeName, 'query': { 'page' : props.page.number } }">
         </b-pagination-button>
 
         <b-pagination-button
@@ -19,7 +19,7 @@
             slot-scope="props"
             :page="props.page"
             tag="router-link"
-            :to="{ 'name': 'genre.index', 'query': { 'page' : props.page.number } }">
+            :to="{ 'name': routeName, 'query': { 'page' : props.page.number } }">
             <b-icon icon="chevron-left"></b-icon>
         </b-pagination-button>
 
@@ -28,7 +28,7 @@
             slot-scope="props"
             :page="props.page"
             tag="router-link"
-            :to="{ 'name': 'genre.index', 'query': { 'page' : props.page.number } }">
+            :to="{ 'name': routeName, 'query': { 'page' : props.page.number } }">
             <b-icon icon="chevron-right"></b-icon>
         </b-pagination-button>
 
@@ -38,6 +38,8 @@
 <script>
     export default {
         name: 'pagination',
-        props: ['pagination']
+        props: ['pagination', 'route-name'],
+        mounted() {
+        }
     }
 </script>

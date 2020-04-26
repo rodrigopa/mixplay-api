@@ -57,7 +57,7 @@ Route::middleware([/*'api.auth', 'role:admin'*/])->group(function() {
 
     // media api resources
     Route::namespace('Media')->group(function() {
-        Route::apiResource('genre', 'GenreController')->except('show');
+        Route::apiResource('genre', 'GenreController');
         Route::apiResource('movie', 'MovieController');
     });
 });

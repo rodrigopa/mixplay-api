@@ -6,9 +6,11 @@ namespace App\Applications\Api\Controllers\Media;
 use App\Applications\Api\Controllers\Controller;
 use App\Applications\Api\Requests\Media\Genre\StoreGenre;
 use App\Applications\Api\Requests\Media\Genre\ValidateGenre;
+use App\Applications\Api\Requests\Media\Movie\ValidateMovie;
 use App\Domain\Media\Genre\Repositories\GenreRepository;
 use App\Domain\Media\Genre\Resources\GenreCollection;
 use App\Domain\Media\Genre\Resources\GenreResource;
+use App\Domain\Media\Movie\Resources\MovieResource;
 
 /**
  * @OA\Tag(
@@ -52,6 +54,39 @@ class GenreController extends Controller
     public function index()
     {
         $collection = new GenreCollection($this->repository->getOrderedByName()->paginate());
+        return $this->responseSuccess($collection);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/genre/{genre}",
+     *     tags={"Genres"},
+     *     summary="Exibir detalhes de um gênero",
+     *     operationId="genreShow",
+     *     @OA\Parameter(
+     *          name="genre",
+     *          in="path",
+     *          required=true,
+     *          description="ID do gênero",
+     *          @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="status", type="string",example="success"),
+     *              @OA\Property(property="data", type="object", ref="#/components/schemas/Genre")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, ref="#components/responses/unauthorized")
+     * )
+     * @param ValidateGenre $validateGenre
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function show(ValidateGenre $validateGenre, $id)
+    {
+        $collection = new GenreResource($this->repository->find($id));
         return $this->responseSuccess($collection);
     }
 

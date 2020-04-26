@@ -18171,6 +18171,10 @@ footer.footer .logo img {
   }
 }
 
+.module-actions {
+  margin: 0 0 20px 0;
+}
+
 .is-user-avatar.has-max-width {
   max-width: 7rem;
 }

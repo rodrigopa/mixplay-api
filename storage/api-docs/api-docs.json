@@ -240,6 +240,49 @@
             }
         },
         "/genre/{genre}": {
+            "get": {
+                "tags": [
+                    "Genres"
+                ],
+                "summary": "Exibir detalhes de um gênero",
+                "operationId": "genreShow",
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#components/responses/unauthorized"
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Genres"
@@ -897,15 +940,19 @@
                         "properties": {
                             "total_pages": {
                                 "description": "Total de páginas",
-                                "type": "string"
+                                "type": "integer"
                             },
                             "current_page": {
                                 "description": "Página atual",
-                                "type": "string"
+                                "type": "integer"
                             },
                             "total": {
                                 "description": "Total de registros",
-                                "type": "string"
+                                "type": "integer"
+                            },
+                            "per_page": {
+                                "description": "Total de registros por página",
+                                "type": "integer"
                             }
                         },
                         "type": "object"
