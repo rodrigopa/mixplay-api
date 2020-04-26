@@ -11,6 +11,8 @@ use App\Applications\Api\Requests\Media\Movie\ValidateMovie;
 use App\Domain\Media\Movie\Repositories\MovieRepository;
 use App\Domain\Media\Movie\Resources\MovieCollection;
 use App\Domain\Media\Movie\Resources\MovieResource;
+use App\Domain\Media\Video\Repositories\VideoRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @OA\Tag(
@@ -86,7 +88,7 @@ class MovieController extends Controller
      */
     public function show(ValidateMovie $validateMovie, $id)
     {
-        $collection = new MovieResource($this->repository->find($id));
+        $collection = new MovieResource($this->repository->getWithVideo($id), ['video']);
         return $this->responseSuccess($collection);
     }
 
@@ -108,13 +110,53 @@ class MovieController extends Controller
      *     @OA\Response(response=401, ref="#components/responses/unauthorized")
      * )
      * @param StoreMovie $storeMovieRequest
+     * @param VideoRepository $videoRepository
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function store(StoreMovie $storeMovieRequest)
+    public function store(StoreMovie $storeMovieRequest, VideoRepository $videoRepository)
     {
-        $fields = $storeMovieRequest->only('name');
-        $genre = $this->repository->create($fields);
-        return $this->responseSuccess(new MovieResource($genre));
+        $this->prepare($storeMovieRequest,
+            function($fields, $videoFields) use ($videoRepository)
+            {
+                $video = $videoRepository->create($videoFields);
+                $fields['video_id'] = $video->id;
+                $movie = $this->repository->create($fields);
+
+                return new MovieResource($movie);
+            }
+        );
+
+//        $fields = $storeMovieRequest->only('name', 'year', 'trailer_url',
+//            'description', 'videos', 'metadata');
+//
+//        // transaction to handle movie and videos
+//        DB::beginTransaction();
+//
+//        try {
+//            $videos = json_decode($fields['videos']);
+//            $videoFields = [];
+//
+//            if (isset($videos->sd))
+//                $videoFields['sd'] = json_encode($videos->sd);
+//
+//            if (isset($videos->hd))
+//                $videoFields['hd'] = json_encode($videos->hd);
+//
+//            if (isset($videos->fullhd))
+//                $videoFields['fullhd'] = json_encode($videos->fullhd);
+//
+//            $video = $videoRepository->create($videoFields);
+//            $fields['video_id'] = $video->id;
+//            $movie = $this->repository->create($fields);
+//
+//            DB::commit();
+//            return $this->responseSuccess(new MovieResource($movie));
+//        }
+//        catch(\Exception $e)
+//        {
+//            DB::rollback();
+//            return $this->responseError('Falha ao cadastrar: ' . $e->getMessage());
+//        }
     }
 
     /**
@@ -143,14 +185,23 @@ class MovieController extends Controller
      * )
      * @param ValidateMovie $validateMovieRequest
      * @param StoreMovie $storeMovieRequest
-     * @param $genreId
+     * @param $movieId
+     * @param VideoRepository $videoRepository
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function update(ValidateMovie $validateMovieRequest, StoreMovie $storeMovieRequest, $genreId)
+    public function update(ValidateMovie $validateMovieRequest, StoreMovie $storeMovieRequest,
+                           $movieId, VideoRepository $videoRepository)
     {
-        $fields = $storeMovieRequest->only('name');
-        $this->repository->update($fields, $genreId);
-        return $this->responseSuccess();
+        $this->prepare($storeMovieRequest,
+            function($fields, $videoFields) use ($movieId, $videoRepository)
+            {
+                $movie = $this->repository->find($movieId);
+                $movie->video->update($videoFields);
+                $this->repository->update($fields, $movieId);
+
+                return [];
+            }
+        );
     }
 
     /**
@@ -180,9 +231,42 @@ class MovieController extends Controller
      * @param $genreId
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function destroy(ValidateMovie $validateMovieRequest, $genreId)
+    public function destroy(ValidateMovie $validateMovieRequest, $movieId)
     {
-        $this->repository->delete($genreId);
+        $this->repository->delete($movieId);
         return $this->responseSuccess();
+    }
+
+    private function prepare($request, callable $operationCallable)
+    {
+        $fields = $request->only('name', 'year', 'trailer_url',
+            'description', 'videos', 'metadata');
+
+        // transaction to handle movie and videos
+        DB::beginTransaction();
+
+        try {
+            $videos = json_decode($fields['videos']);
+            $videoFields = [];
+
+            if (isset($videos->sd))
+                $videoFields['sd'] = json_encode($videos->sd);
+
+            if (isset($videos->hd))
+                $videoFields['hd'] = json_encode($videos->hd);
+
+            if (isset($videos->fullhd))
+                $videoFields['fullhd'] = json_encode($videos->fullhd);
+
+            $return = $operationCallable($fields);
+
+            DB::commit();
+            return $this->responseSuccess($return);
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return $this->responseError('Falha ao fazer operação: ' . $e->getMessage());
+        }
     }
 }

@@ -16,7 +16,8 @@ use Illuminate\Validation\Rule;
  *              @OA\Property(property="year", type="integer"),
  *              @OA\Property(property="trailer_url", type="string"),
  *              @OA\Property(property="description", type="string"),
- *              @OA\Property(property="video_id", type="integer"),
+ *              @OA\Property(property="metadata", type="string"),
+ *              @OA\Property(property="videos", type="string"),
  *         )
  *     )
  */
@@ -39,7 +40,8 @@ class StoreMovie extends ApiRequest
             'year' => 'ano',
             'trailer_url' => 'URL do trailer',
             'description' => 'descrição',
-            'video_id' => 'vídeo'
+            'metadata' => 'metadata',
+            'videos' => 'videos'
         ];
     }
 
@@ -55,7 +57,8 @@ class StoreMovie extends ApiRequest
             'year' => 'required|integer',
             'trailer_url' => 'required|url',
             'description' => 'required',
-            'video_id' => 'required|exists:videos,id'
+            'videos' => 'required|json',
+            'metadata' => 'required|json'
         ];
     }
 }

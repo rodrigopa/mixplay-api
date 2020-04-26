@@ -19,7 +19,7 @@ class ValidateMovie extends ApiRequest
     public function messages()
     {
         return [
-            'genre.exists' => 'O filme não existe.'
+            'movie.exists' => 'O filme não existe.'
         ];
     }
 
@@ -36,7 +36,7 @@ class ValidateMovie extends ApiRequest
     public function rules()
     {
         return [
-            'genre' => 'required|exists:movies,id'
+            'movie' => 'required|exists:movies,id'
         ];
     }
 }

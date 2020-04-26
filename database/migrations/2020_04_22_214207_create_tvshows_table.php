@@ -16,14 +16,10 @@ class CreateTvshowsTable extends Migration
         Schema::create('tvshows', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->tinyInteger('year');
+            $table->unsignedInteger('year');
             $table->string('description');
             $table->json('metadata');
-            $table->unsignedBigInteger('genre_id');
             $table->timestamps();
-
-            // foreign key
-            $table->foreign('genre_id')->references('id')->on('genres');
         });
     }
 

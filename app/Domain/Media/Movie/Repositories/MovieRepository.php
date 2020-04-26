@@ -13,4 +13,9 @@ class MovieRepository extends BaseRepository
     {
         return Movie::class;
     }
+
+    public function getWithVideo($id)
+    {
+        return $this->model->with('video')->find($id);
+    }
 }

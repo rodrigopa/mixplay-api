@@ -17,31 +17,39 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class PaginationResource extends JsonResource
 {
     /**
-     *          @OA\Property(
+     * @OA\Property(
      *               type="object",
      *               @OA\Property(
      *                   property="total_pages",
      *                   description="Total de páginas",
-     *                   type="string"
+     *                   type="integer"
      *               ),
      *               @OA\Property(
      *                   property="current_page",
      *                   description="Página atual",
-     *                   type="string"
+     *                   type="integer"
      *               ),
- *                   @OA\Property(
+     *               @OA\Property(
      *                   property="total",
      *                   description="Total de registros",
-     *                   type="string"
+     *                   type="integer"
+     *               ),
+     *              @OA\Property(
+     *                   property="per_page",
+     *                   description="Total de registros por página",
+     *                   type="integer"
      *               ),
      *           )
+     * @param $request
+     * @return array
      */
     public function toArray($request)
     {
         return [
             'total_pages' => $this->lastPage(),
             'current_page' => $this->currentPage(),
-            'total' => $this->total()
+            'total' => $this->total(),
+            'per_page' => $this->perPage()
         ];
     }
 }

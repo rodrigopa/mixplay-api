@@ -1,0 +1,7 @@
+.pagination {
+    margin-top: 1rem;
+
+    .pagination-link[disabled] {
+        pointer-events: none;
+    }
+}

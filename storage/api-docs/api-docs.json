@@ -1017,8 +1017,11 @@
                                 "description": {
                                     "type": "string"
                                 },
-                                "video_id": {
-                                    "type": "integer"
+                                "metadata": {
+                                    "type": "string"
+                                },
+                                "videos": {
+                                    "type": "string"
                                 }
                             },
                             "type": "object"

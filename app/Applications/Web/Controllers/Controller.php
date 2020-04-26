@@ -11,4 +11,14 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function index()
+    {
+        return view('app');
+    }
+
+    public function adminIndex()
+    {
+        return view('admin_app');
+    }
 }
