@@ -27,7 +27,7 @@
 <script>
     import axios from 'axios'
     import Pagination from "../../components/Pagination";
-    import ModalMixin from "../../mixins/ModalMixin";
+    import ModalMixin from "../../mixins/AlertMixin";
 
     export default {
         mixins: [ModalMixin],
@@ -50,6 +50,9 @@
                         const resultData = res.data.data;
                         this.data = resultData.items;
                         this.pagination = resultData.links;
+                    })
+                    .catch(reason => {
+                        this.alertErrorRequest();
                     })
             },
             destroy(id) {

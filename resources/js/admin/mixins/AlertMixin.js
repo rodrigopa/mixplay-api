@@ -1,4 +1,5 @@
 import axios from "axios";
+import EventBus from "../../eventBus";
 
 export default {
     data() {
@@ -31,5 +32,14 @@ export default {
                 type: 'is-success'
             })
         }
+    },
+    mounted: function() {
+        EventBus.subscribe('validation_error', messages => {
+            this.$buefy.notification.open({
+                duration: 5000,
+                message: messages.join("\n"),
+                type: 'is-danger'
+            })
+        })
     }
 }

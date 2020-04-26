@@ -2637,7 +2637,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mixins_ModalMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/ModalMixin */ "./resources/js/admin/mixins/ModalMixin.js");
+/* harmony import */ var _mixins_AlertMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/AlertMixin */ "./resources/js/admin/mixins/AlertMixin.js");
 //
 //
 //
@@ -2652,9 +2652,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_ModalMixin__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  mixins: [_mixins_AlertMixin__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
+      label: 'Gênero',
       data: {}
     };
   },
@@ -2755,7 +2756,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_Pagination__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Pagination */ "./resources/js/admin/components/Pagination.vue");
-/* harmony import */ var _mixins_ModalMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/ModalMixin */ "./resources/js/admin/mixins/ModalMixin.js");
+/* harmony import */ var _mixins_AlertMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/AlertMixin */ "./resources/js/admin/mixins/AlertMixin.js");
 //
 //
 //
@@ -2786,7 +2787,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixins_ModalMixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  mixins: [_mixins_AlertMixin__WEBPACK_IMPORTED_MODULE_2__["default"]],
   components: {
     Pagination: _components_Pagination__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
@@ -2806,6 +2807,8 @@ __webpack_require__.r(__webpack_exports__);
         var resultData = res.data.data;
         _this.data = resultData.items;
         _this.pagination = resultData.links;
+      })["catch"](function (reason) {
+        _this.alertErrorRequest();
       });
     },
     destroy: function destroy(id) {
@@ -36805,9 +36808,9 @@ _router__WEBPACK_IMPORTED_MODULE_0__["default"].afterEach(function (to) {
 
 /***/ }),
 
-/***/ "./resources/js/admin/mixins/ModalMixin.js":
+/***/ "./resources/js/admin/mixins/AlertMixin.js":
 /*!*************************************************!*\
-  !*** ./resources/js/admin/mixins/ModalMixin.js ***!
+  !*** ./resources/js/admin/mixins/AlertMixin.js ***!
   \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -36816,6 +36819,9 @@ _router__WEBPACK_IMPORTED_MODULE_0__["default"].afterEach(function (to) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../eventBus */ "./resources/js/eventBus.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_1__);
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -36849,6 +36855,17 @@ __webpack_require__.r(__webpack_exports__);
         type: 'is-success'
       });
     }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    _eventBus__WEBPACK_IMPORTED_MODULE_1___default.a.subscribe('validation_error', function (messages) {
+      _this2.$buefy.notification.open({
+        duration: 5000,
+        message: messages.join("\n"),
+        type: 'is-danger'
+      });
+    });
   }
 });
 
@@ -37443,8 +37460,83 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eventBus */ "./resources/js/eventBus.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_eventBus__WEBPACK_IMPORTED_MODULE_1__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api';
+axios__WEBPACK_IMPORTED_MODULE_0___default.a.interceptors.response.use(null, function (error) {
+  if (error.response.status === 422) {
+    var errors = error.response.data.data.errors;
+    var messages = [];
+    Object.entries(errors).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          key = _ref2[0],
+          array = _ref2[1];
+
+      messages = messages.concat(array);
+    });
+    _eventBus__WEBPACK_IMPORTED_MODULE_1___default.a.publish('validation_error', messages);
+  }
+
+  return Promise.reject(error);
+});
+
+/***/ }),
+
+/***/ "./resources/js/eventBus.js":
+/*!**********************************!*\
+  !*** ./resources/js/eventBus.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var subscriptions = {};
+var getNextUniqueId = getIdGenerator();
+
+function subscribe(eventType, callback) {
+  var id = getNextUniqueId();
+  if (!subscriptions[eventType]) subscriptions[eventType] = {};
+  subscriptions[eventType][id] = callback;
+  return {
+    unsubscribe: function unsubscribe() {
+      delete subscriptions[eventType][id];
+      if (Object.keys(subscriptions[eventType]).length === 0) delete subscriptions[eventType];
+    }
+  };
+}
+
+function publish(eventType, arg) {
+  if (!subscriptions[eventType]) return;
+  Object.keys(subscriptions[eventType]).forEach(function (key) {
+    return subscriptions[eventType][key](arg);
+  });
+}
+
+function getIdGenerator() {
+  var lastId = 0;
+  return function getNextUniqueId() {
+    lastId += 1;
+    return lastId;
+  };
+}
+
+module.exports = {
+  publish: publish,
+  subscribe: subscribe
+};
 
 /***/ }),
 

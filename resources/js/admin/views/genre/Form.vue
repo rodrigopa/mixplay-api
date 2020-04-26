@@ -11,12 +11,13 @@
 
 <script>
     import axios from 'axios'
-    import ModalMixin from "../../mixins/ModalMixin";
+    import ModalMixin from "../../mixins/AlertMixin";
 
     export default {
         mixins: [ModalMixin],
         data() {
             return {
+                label: 'Gênero',
                 data: {}
             }
         },
